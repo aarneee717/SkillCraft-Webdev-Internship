@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kawaii Stopwatch ⏱️</title>
+  <style>
+    /* ===== Background Checkerboard ===== */
+    body {
+      margin: 0;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: 
+        linear-gradient(45deg, #ffd6e0 25%, transparent 25%), 
+        linear-gradient(-45deg, #ffd6e0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ffd6e0 75%), 
+        linear-gradient(-45deg, transparent 75%, #ffd6e0 75%);
+      background-size: 40px 40px;
+      background-color: #fff0f6;
+    }
+
+    /* ===== Stopwatch Container with Frosted Glass Effect ===== */
+    .stopwatch {
+      background: rgba(255, 230, 240, 0.7);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border: 4px solid #ffb6c1;
+      border-radius: 25px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+      width: 350px;
+      position: relative;
+    }
+
+    /* ===== Typography & Display ===== */
+    .stopwatch h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #ff6fa8;
+      text-shadow: 2px 2px #fff;
+    }
+    .time {
+      font-size: 2rem;
+      margin: 15px 0;
+      font-weight: bold;
+      color: #ff4081;
+      background: #fff;
+      padding: 10px 20px;
+      border-radius: 15px;
+      border: 2px dashed #ffb6c1;
+      display: inline-block;
+    }
+
+    /* ===== Button Styles with Hover Effects ===== */
+    .buttons {
+      margin: 20px 0;
+    }
+    button {
+      display: inline-block;
+      padding: 12px 18px;
+      margin: 5px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 15px;
+      background: #ffb6c1;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(255, 182, 193, 0.4);
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.1);
+      background: #ff6fa8;
+    }
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* ===== Laps Section ===== */
+    .laps {
+      margin-top: 20px;
+      max-height: 150px;
+      overflow-y: auto;
+      background: #fff0f6;
+      border-radius: 15px;
+      padding: 10px;
+      border: 2px dotted #ffb6c1;
+    }
+    .laps p {
+      margin: 5px 0;
+      padding: 6px 12px;
+      background: #ffe6f0;
+      border-radius: 10px;
+      color: #ff4081;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(255, 105, 180, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="stopwatch">
+    <h1>⏱️ Kawaii Stopwatch ✨</h1>
+    <div class="time" id="display">00:00:00</div>
+    <div class="buttons">
+      <button onclick="startStop()">Start</button>
+      <button onclick="pause()">Pause</button>
+      <button onclick="reset()">Reset</button>
+      <button onclick="lap()">Lap</button>
+    </div>
+    <div class="laps" id="laps"></div>
+  </div>
+
+  <script>
+    let timer, isRunning = false, seconds = 0, minutes = 0, hours = 0;
+
+    function updateDisplay() {
+      const h = hours < 10 ? "0" + hours : hours;
+      const m = minutes < 10 ? "0" + minutes : minutes;
+      const s = seconds < 10 ? "0" + seconds : seconds;
+      document.getElementById("display").textContent = `${h}:${m}:${s}`;
+    }
+
+    function startStop() {
+      if (!isRunning) {
+        timer = setInterval(() => {
+          seconds++;
+          if (seconds === 60) { seconds = 0; minutes++;
+            if (minutes === 60) { minutes = 0; hours++; }
+          }
+          updateDisplay();
+        }, 1000);
+        isRunning = true;
+      }
+    }
+
+    function pause() {
+      clearInterval(timer);
+      isRunning = false;
+    }
+
+    function reset() {
+      clearInterval(timer);
+      isRunning = false;
+      seconds = minutes = hours = 0;
+      updateDisplay();
+      document.getElementById("laps").innerHTML = "";
+    }
+
+    function lap() {
+      if (isRunning) {
+        const lapTime = document.getElementById("display").textContent;
+        const lapDiv = document.createElement("p");
+        lapDiv.textContent = "Lap: " + lapTime;
+        document.getElementById("laps").appendChild(lapDiv);
+      }
+    }
+  </script>
+</body>
+</html>

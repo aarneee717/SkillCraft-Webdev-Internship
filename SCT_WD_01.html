@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dessert Menu</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background Gradient */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #f5f5dc, #9c9088); /* beige → brown */
+      z-index: -2;
+    }
+
+    header {
+      color: rgba(63, 48, 48, 0.851);
+      font-family: 'Dancing Script', cursive;
+      font-size: 3rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+      margin-bottom: 2rem;
+      z-index: 1;
+    }
+
+    /* Glass Table Card */
+    .menu-table {
+      width: 80%;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      color: rgb(21, 21, 21);
+      font-size: 1rem;
+      font-style: italic;
+      margin-bottom: 3rem;
+      z-index: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    th {
+      font-size: 1.2rem;
+      background: rgba(255,255,255,0.1);
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+    }
+
+    /* Popup card */
+    .popup {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+      color: white;
+      padding: 1rem;
+      width: 280px;
+      text-align: center;
+      display: none;
+      transition: opacity 0.3s ease;
+      z-index: 2;
+    }
+
+    .popup img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+    }
+
+    .popup.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Sweet Dessert Menu 🍰
+  </header>
+
+  <!-- Menu Table -->
+  <div class="menu-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Dessert</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-name="Chocolate Cake" data-price="$6.49" data-img="images/chocolate-cake.jpg" data-desc="Rich chocolate cake with creamy frosting.">
+          <td>Chocolate Cake</td><td>$6.49</td>
+        </tr>
+        <tr data-name="Cheesecake" data-price="$5.99" data-img="images/cheesecake.jpg" data-desc="Classic cheesecake with a graham cracker crust.">
+          <td>Cheesecake</td><td>$5.99</td>
+        </tr>
+        <tr data-name="Tiramisu" data-price="$7.49" data-img="images/tiramisu.jpg" data-desc="Italian dessert layered with coffee-soaked ladyfingers.">
+          <td>Tiramisu</td><td>$7.49</td>
+        </tr>
+        <tr data-name="Strawberry Tart" data-price="$6.99" data-img="images/strawberry-tart.jpg" data-desc="Fresh strawberry tart with vanilla custard.">
+          <td>Strawberry Tart</td><td>$6.99</td>
+        </tr>
+        <tr data-name="Macarons" data-price="$4.99" data-img="images/macarons.jpg" data-desc="Colorful French macarons with creamy filling.">
+          <td>Macarons</td><td>$4.99</td>
+        </tr>
+        <tr data-name="Brownies" data-price="$3.99" data-img="images/brownies.jpg" data-desc="Fudgy brownies with chunks of chocolate.">
+          <td>Brownies</td><td>$3.99</td>
+        </tr>
+        <tr data-name="Cupcakes" data-price="$4.49" data-img="images/cupcakes.jpg" data-desc="Assorted cupcakes topped with buttercream.">
+          <td>Cupcakes</td><td>$4.49</td>
+        </tr>
+        <tr data-name="Panna Cotta" data-price="$5.49" data-img="images/panna-cotta.jpg" data-desc="Creamy Italian panna cotta with berry sauce.">
+          <td>Panna Cotta</td><td>$5.49</td>
+        </tr>
+        <tr data-name="Apple Pie" data-price="$5.29" data-img="images/apple-pie.jpg" data-desc="Warm apple pie with cinnamon and crust.">
+          <td>Apple Pie</td><td>$5.29</td>
+        </tr>
+        <tr data-name="Ice Cream Sundae" data-price="$4.79" data-img="images/ice-cream-sundae.jpg" data-desc="Scoops of ice cream with toppings and syrup.">
+          <td>Ice Cream Sundae</td><td>$4.79</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Popup Card -->
+  <div class="popup" id="popup">
+    <img id="popup-img" src="" alt="Dessert">
+    <h2 id="popup-name"></h2>
+    <p id="popup-price"></p>
+    <p id="popup-desc"></p>
+  </div>
+
+  <script>
+    const rows = document.querySelectorAll("tbody tr");
+    const popup = document.getElementById("popup");
+    const popupImg = document.getElementById("popup-img");
+    const popupName = document.getElementById("popup-name");
+    const popupPrice = document.getElementById("popup-price");
+    const popupDesc = document.getElementById("popup-desc");
+
+    rows.forEach(row => {
+      row.addEventListener("mouseenter", () => {
+        popupImg.src = row.dataset.img;
+        popupName.textContent = row.dataset.name;
+        popupPrice.textContent = row.dataset.price;
+        popupDesc.textContent = row.dataset.desc;
+
+        const rect = row.getBoundingClientRect();
+        popup.style.top = rect.bottom + window.scrollY + "px";
+        popup.classList.add("show");
+      });
+
+      row.addEventListener("mouseleave", () => {
+        popup.classList.remove("show");
+      });
+    });
+  </script>
+</body>
+</html>
